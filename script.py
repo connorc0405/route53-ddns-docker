@@ -4,6 +4,7 @@ import subprocess
 import os
 import json
 import time
+from ipaddress import ip_address, IPv4Address
 
 
 zone_id = os.environ['ZONEID']
@@ -30,6 +31,8 @@ def change_listed_ip(new_ip):
     with open("/change.json", 'r') as change_file:
         jsony = json.load(change_file)
         jsony['Changes'][0]['ResourceRecordSet']['Name'] = domain
+        if type(ip_address(new_ip)) is not IPv4Address:
+            jsony['Changes'][0]['ResourceRecordSet']['Type'] = 'AAAA'
         jsony['Changes'][0]['ResourceRecordSet']['ResourceRecords'][0]['Value'] = new_ip
         with open("/change_final.json", 'w') as change_final_file:
             json.dump(jsony, change_final_file)
