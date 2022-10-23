@@ -22,7 +22,7 @@ def get_listed_ip():
 
 
 def get_public_ip():
-    output = subprocess.check_output(["curl", "checkip.amazonaws.com"])
+    output = subprocess.check_output(["curl", "--silent", "checkip.amazonaws.com"])
     public_ip = output.decode().rstrip('\n')
     return public_ip
 
